@@ -24,6 +24,7 @@ def init_db():
     db = SessionLocal()
     
     try:
+        
         # Check if users already exist
         existing_recruiter = db.query(User).filter(User.email == "recruiter@example.com").first()
         existing_candidate = db.query(User).filter(User.email == "candidate@example.com").first()
