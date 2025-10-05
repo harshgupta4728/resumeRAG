@@ -9,7 +9,7 @@ import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from app.database import engine
-from app.models.models import Base, User
+from app.models.models import Base, User, UserRole
 from app.core.security import get_password_hash
 
 def init_db():
@@ -33,7 +33,7 @@ def init_db():
             recruiter = User(
                 email="recruiter@example.com",
                 hashed_password=get_password_hash("strongpassword"),
-                role="recruiter"
+                role=UserRole.RECRUITER
             )
             db.add(recruiter)
             print("✅ Test recruiter user created")
@@ -44,7 +44,7 @@ def init_db():
             candidate = User(
                 email="candidate@example.com",
                 hashed_password=get_password_hash("strongpassword"),
-                role="candidate"
+                role=UserRole.CANDIDATE
             )
             db.add(candidate)
             print("✅ Test candidate user created")

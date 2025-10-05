@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from ..database import get_db
 from ..models.models import User
@@ -7,6 +8,7 @@ from ..core.security import verify_password, get_password_hash, create_access_to
 from datetime import timedelta
 
 router = APIRouter()
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/login")
 
 
 def get_user_by_email(db: Session, email: str):
@@ -69,9 +71,10 @@ def login(user_credentials: UserLogin, db: Session = Depends(get_db)):
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-def get_current_user(token: str = Depends(verify_token), db: Session = Depends(get_db)):
-    """Get current authenticated user."""
-    email = token.get("sub")
+def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    """Get current authenticated user from Authorization Bearer token."""
+    payload = verify_token(token)
+    email = payload.get("sub")
     if email is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

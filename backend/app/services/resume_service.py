@@ -136,7 +136,7 @@ class ResumeProcessingService:
         result = db.execute(
             query_sql,
             {
-                "query_embedding": str(query_embedding),
+                "query_embedding": query_embedding,
                 "k": k
             }
         ).fetchall()
@@ -175,7 +175,7 @@ class ResumeProcessingService:
         result = db.execute(
             query_sql,
             {
-                "job_embedding": str(job.embedding),
+                "job_embedding": job.embedding,
                 "top_n": top_n
             }
         ).fetchall()
