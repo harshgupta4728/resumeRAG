@@ -42,7 +42,7 @@ services:
         condition: service_healthy
     volumes:
       - ./backend:/app
-    command: sh -c "python init_db.py && pip install -q bcrypt==4.0.1 email-validator==2.1.1 huggingface_hub==0.16.4 && uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    command: sh -c "pip install --no-cache-dir -r requirements.txt && python init_db.py && uvicorn app.main:app --host 0.0.0.0 --port 8000"
 
   frontend:
     build: ./frontend
